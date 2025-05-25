@@ -1,6 +1,6 @@
 import 'package:dart_tutorial/dart_tutorial.dart' as dart_tutorial;
 
-void main() {
+void main() async {
   //records
   (int, String) person = (1, "Adol");
 
@@ -61,8 +61,19 @@ void main() {
 
   runtimeType → Gets the runtime type.*/
 
-  
+  await for (var page in fetchPages(3)) {
+  print('Fetched Page: $page');
+  }
 
+  List<String> fakeFile = [
+  "First line",
+  "Second line",
+  "Third line"
+  ];
+
+  for (var line in readLines(fakeFile)) {
+  print("Read: $line");
+  }
 
 }
 
@@ -82,4 +93,81 @@ List<String> buildCommandLine(
     ...options,
     ...?extraOptions, // <-- OK now.
   ];
+}
+
+//function with optional parameter using []
+String greet(String name, [String? title]) {
+  return title != null ? "Hello, $title $name!" : "Hello, $name!";
+}
+
+//named parameter using required
+void printUser({required String name, int age = 18}) {
+  print("Name: $name, Age: $age");
+}
+
+//function with default value
+void log({String message = "No message"}) {
+  print(message);
+}
+
+//Higher-Order Functions
+void operate(Function(int, int) action) {
+  print(action(10, 5)); // Calls the passed function
+}
+
+//operate((a, b) => a + b); // Output: 15
+
+//Generics in function
+T first<T>(List<T> list) => list[0];
+
+//Generator async function
+Stream<List<String>> fetchPages(int totalPages) async* {
+  for (int i = 1; i <= totalPages; i++) {
+    await Future.delayed(Duration(seconds: 1)); // Simulate network delay
+    yield List.generate(3, (j) => "Item Page $i - ${j + 1}");
+  }
+}
+
+//Generator sync function
+Iterable<String> readLines(List<String> fileLines) sync* {
+  for (var line in fileLines) {
+    yield line;
+  }
+}
+
+// sync
+int add(int a, int b) {
+  return a + b;
+}
+
+// sync*
+Iterable<int> numbers() sync* {
+  yield 1;
+  yield 2;
+  yield 3;
+}
+
+// async
+Future<String> getData() async {
+  await Future.delayed(Duration(seconds: 1));
+  return "Data";
+}
+
+// async*
+Stream<int> counter() async* {
+  for (int i = 0; i < 3; i++) {
+    await Future.delayed(Duration(seconds: 1));
+    yield i;
+  }
+}
+
+Iterable<int> numbersSync() sync* {
+  yield 1;
+  yield 2;
+}
+
+Iterable<int> allNumbers() sync* {
+  yield 0;
+  yield* numbers(); // yields 1 and 2 from the `numbers()` generator
+  yield 3;
 }
