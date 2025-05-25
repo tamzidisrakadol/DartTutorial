@@ -1,3 +1,5 @@
+import 'dart:core';
+
 import 'package:dart_tutorial/dart_tutorial.dart' as dart_tutorial;
 
 void main() async {
@@ -74,6 +76,9 @@ void main() async {
   for (var line in readLines(fakeFile)) {
   print("Read: $line");
   }
+
+  var details = greetUser();
+  print(details("Hello", "Adol"));
 
 }
 
@@ -170,4 +175,22 @@ Iterable<int> allNumbers() sync* {
   yield 0;
   yield* numbers(); // yields 1 and 2 from the `numbers()` generator
   yield 3;
+}
+
+// Function Returning Another Function
+Function makeMultiplier(int factor) {
+  return (int x) => x * factor;
+}
+
+int addition(int a, int b) {
+  return a + b;
+}
+int Function(int, int) operation=addition;
+
+String typeCheck(String b, String c){
+  return "$b $c";
+}
+
+String Function(String, String) greetUser(){
+  return typeCheck ;
 }
