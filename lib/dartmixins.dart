@@ -48,3 +48,4 @@ class Event with TimestampLogger {
   String name;
   Event(this.name);
 }
+
